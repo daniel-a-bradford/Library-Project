@@ -1,0 +1,3 @@
+This project creates a virtual library consisting of several physical branches (containing a subset of the library's books), customers, and books. Using dialog boxes, it allows the user to search for books and customers. Once a book and a customer are selected, the customer can check out books. The user can add new books, branches and customers or have the library generate them randomly from the included text file lists. 
+
+The current version only generates branches and customers with addresses in Illinois. Future additions will include methods to assign fines for overdue books, keep customers with overdue books from checking out more books, and mark books which are damaged and in need of replacement out of circulation.
