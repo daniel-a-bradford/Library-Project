@@ -294,7 +294,11 @@ public class Book {
 	@Override
 	public String toString() {
 		String outputString = "Book ISBN " + this.isbn + " " + this.title +  " by " + this.author + " with " + this.numberOfPages + " pages, of the " + 
-				this.genre + " genre\n";
+				this.genre + " genre\nIt is";
+		if (!this.isCheckedOut()) {
+			outputString += " not ";
+		}
+		outputString += " checked out.\n";
 		return outputString;
 	}
 	

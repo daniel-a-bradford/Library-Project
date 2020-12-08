@@ -1,5 +1,7 @@
 package libraryProject;
 
+// Posted on https://github.com/daniel-a-bradford/Library-Project.git
+
 import javax.swing.JOptionPane;
 
 public class LibraryMain {
@@ -20,15 +22,12 @@ public class LibraryMain {
 		 * generate a specified number of books. 9. Randomly generate a specified number
 		 * of customers. 10. Randomly generate a specified number of branches.
 		 */
-
-		boolean userExit = false;
-		/*
-		 * TODO Use currentBook and currentCustomer to allow a user to search for a book
-		 * and check it out with currentCustomer (if designated) or search for a
-		 * customer and have them check out currentBook (if designated).
-		 */
 		String libraryName = "Illinois Random Virtual Library";
+		Library ourLibrary = new Library(libraryName);
+		ourLibrary = setDefaultBranchesBooksCustomers(ourLibrary);
+		boolean userExit = false;
 		while (!userExit) {
+
 			String mainMenuPrompt = "Welcome to the " + libraryName + "! \n";
 			if (currentBook.getBookID() != 0) {
 				mainMenuPrompt += "The currently selected book is " + currentBook.getTitle() + " copy number "
@@ -54,9 +53,6 @@ public class LibraryMain {
 			// exit.
 			if (userInputInt != null) {
 
-				// The user wants to access the library, so create one
-				Library ourLibrary = new Library(libraryName);
-				ourLibrary = setDefaultBranchesBooksCustomers(ourLibrary);
 				// Start building the outputMessage
 				String outputMessage = "You selected " + userInputInt;
 				// Determine the method to run
@@ -83,13 +79,13 @@ public class LibraryMain {
 					displayNumBranchBooks(ourLibrary);
 					break;
 				case 8:
-					generateBooks(ourLibrary);
+					ourLibrary = generateBooks(ourLibrary);
 					break;
 				case 9:
-					generateCustomers(ourLibrary);
+					ourLibrary = generateCustomers(ourLibrary);
 					break;
 				case 10:
-					generateBranches(ourLibrary);
+					ourLibrary = generateBranches(ourLibrary);
 					break;
 				default:
 					outputMessage += " which is not a valid menu option.";
@@ -247,21 +243,21 @@ public class LibraryMain {
 	private static Library checkoutMenu(Library currentLibrary) {
 		if (currentBook.getBookID() != 0) {
 			if (currentCustomer.getCustomerID() != 0) {
-
 				if (currentCustomer.isCanCheckOut()) {
 					if (!currentBook.isCheckedOut()) {
-						String checkoutPrompt = "Would customer " + currentCustomer.getCustomerID() + " "
+						String checkoutPrompt = "Would customer #" + currentCustomer.getCustomerID() + " "
 								+ currentCustomer.getCustomerName() + "\n" + currentCustomer.getCustomerAddress()
 								+ "\nlike to check out the follow book?\n" + currentBook.getTitle() + " copy number "
 								+ currentBook.getCopyNum();
-						if (!currentBook.isCheckedOut()) {
-							checkoutPrompt += " not ";
-						}
-						checkoutPrompt += " checked out?";
 						Boolean checkBookOut = DialogInput.getInputBoolean(checkoutPrompt);
 						if (checkBookOut) {
-							currentLibrary.checkOutBook(currentCustomer, currentBook);
-							currentBook = new Book(0);
+							if (currentLibrary.checkOutBook(currentCustomer, currentBook)) {
+								displayMessage(currentCustomer.getCustomerName() + " checked out " 
+										+ currentBook.getTitle() + " copy number " + currentBook.getCopyNum());
+								currentBook = new Book(0);
+							}
+								displayError(currentCustomer.getCustomerName() + " was not able to check out " 
+										+ currentBook.getTitle() + " copy number " + currentBook.getCopyNum());
 						}
 					} else {
 						displayError(currentBook.getTitle() + " copy number " + currentBook.getCopyNum()
